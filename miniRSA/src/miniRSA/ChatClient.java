@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,6 +18,7 @@ public class ChatClient {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+
 		// parse parameters
 		if (args.length != 4) {
 			System.out.println("Wrong argument format.");
@@ -32,7 +34,7 @@ public class ChatClient {
 			System.out.println("ChatClient <serverAddress> <serverPort> <PubKey d> <PubKey c>");
 			return;
 		}
-		
+
 		while (true) {
 			// Read input and send
 			Scanner read = new Scanner(System.in);
