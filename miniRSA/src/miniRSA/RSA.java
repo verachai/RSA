@@ -144,9 +144,18 @@ public class RSA {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		generateKeys(prime);
+//		runEncryption(prime);
+//		runDecryption(prime);
+//		runCracking(prime);
 		
-		System.out.println("Enter the nth and mth prime number to compute");
+	}
+	
+	private static void generateKeys(ArrayList<Integer> prime) {
 		Scanner read = new Scanner(System.in);
+
+		System.out.println("Enter the nth and mth prime number to compute");
 		
 		int n1 = read.nextInt();
 		int n2 = read.nextInt();
@@ -160,15 +169,70 @@ public class RSA {
 		System.out.println("c = " + c + ", m = " + m + ", e = " + e + ", d = " + d);
 		System.out.println("Public Key = (" + e + ", " + c + ")");
 		System.out.println("Private Key = (" + d + ", " + c + ")");
+	}
+	
+	private static void runEncryption(ArrayList<Integer> prime) {
+		Scanner read = new Scanner(System.in);
+		
+		System.out.println("Enter the pulic key value (e, c): first e, then c");
+		int public_e = read.nextInt();
+		int public_c = read.nextInt();
 
-		System.out.println("Please enter a sentence to encrypt: ");
+		System.out.println("\nPlease enter a sentence to encrypt: ");
 		read = new Scanner(System.in);
 		String sentence = read.nextLine();
 		long[] encryption = new long[sentence.length()];
 		for (int i = 0; i < sentence.length(); i++) {
-			encryption[i] = endecrypt(sentence.charAt(i), e, c);
+			encryption[i] = endecrypt(sentence.charAt(i), public_e, public_c);
 			System.out.println(encryption[i]);
 		}
+	}
+	
+	private static void runDecryption(ArrayList<Integer> prime) {
+		Scanner read = new Scanner(System.in);
+
+		System.out.println("Please enter the private key (d, c): first d, then c");
+		int private_d = read.nextInt();
+		int private_c = read.nextInt();
 		
+		while (true) {
+			System.out.println("Enter next char cipher value as an int, type quit to quit");
+			if (!read.hasNextInt()) break;
+			int cipher = read.nextInt();
+			long decryption = endecrypt(cipher, private_d, private_c);
+			System.out.println((char)decryption + " " + decryption);
+		}
+
+	}
+	
+	private static void runCracking(ArrayList<Integer> prime) {
+		Scanner read = new Scanner(System.in);
+
+		System.out.println("Enter the pulic key value (e, c): first e, then c");
+		int public_e = read.nextInt();
+		int public_c = read.nextInt();
+		int aa = 0, bb = 0;
+		
+		for (int p: prime) {
+			if (public_c % p == 0) {
+				aa = p;
+				break;
+			}
+		}
+		bb = public_c / aa;
+		long mm = (aa - 1) * (bb - 1);
+		System.out.println("a was " + aa + ", b was " + bb);
+		System.out.println("The totient was " + totient(mm));
+		long dd = mod_inverse(public_e, mm);
+		System.out.println("D was found to be " + dd);
+		
+		while(true) {
+			System.out.println("Enter a number to encrypt/decrypt, or quit to exit");
+			if (!read.hasNextInt()) break;
+			int num = read.nextInt();
+			long result = endecrypt(num, dd, public_c);
+			System.out.println("This char decrypted to " + result);
+			System.out.println("The letter is " + (char)result);
+		}
 	}
 }
