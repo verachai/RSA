@@ -1,7 +1,14 @@
 package miniRSA;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class RSA {
 
@@ -42,7 +49,7 @@ public class RSA {
 	public static long coprime(long x) {
 		Random rand = new Random();
 		while(true) {
-			long y = rand.nextLong();
+			long y = rand.nextInt((int) x);
 			if (GCD(x, y) == 1)
 				return y;
 		}
@@ -118,9 +125,50 @@ public class RSA {
 		}
 		return true;
 	}
-	
-//	public static long endecrypt(long msg_or_cipher, long key, long c) {
-//		
-//	}
 
+	public static long endecrypt(long msg_or_cipher, long key, long c) {
+		return modulo(msg_or_cipher, key, c);
+	}
+
+	public static void main(String[] args) {
+		ArrayList<Integer> prime = new ArrayList<Integer>();
+		try {
+			FileReader file = new FileReader("Prime Number List.txt");
+			BufferedReader reader = new BufferedReader(file);
+			
+			while (reader.ready()) {
+				prime.add(Integer.parseInt(reader.readLine()));
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("Enter the nth and mth prime number to compute");
+		Scanner read = new Scanner(System.in);
+		
+		int n1 = read.nextInt();
+		int n2 = read.nextInt();
+		int a = prime.get(n1);
+		int b = prime.get(n2);
+		long c = a * b;
+		long m = (a - 1) * (b - 1);
+		long e = coprime(m);
+		long d = mod_inverse(e, m);
+		System.out.println(n1 + "th prime = " + a + ", " + n2 + "th prime = " + b);
+		System.out.println("c = " + c + ", m = " + m + ", e = " + e + ", d = " + d);
+		System.out.println("Public Key = (" + e + ", " + c + ")");
+		System.out.println("Private Key = (" + d + ", " + c + ")");
+
+		System.out.println("Please enter a sentence to encrypt: ");
+		read = new Scanner(System.in);
+		String sentence = read.nextLine();
+		long[] encryption = new long[sentence.length()];
+		for (int i = 0; i < sentence.length(); i++) {
+			encryption[i] = endecrypt(sentence.charAt(i), e, c);
+			System.out.println(encryption[i]);
+		}
+		
+	}
 }
