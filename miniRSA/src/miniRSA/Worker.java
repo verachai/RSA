@@ -29,26 +29,31 @@ public class Worker implements Runnable {
 		} catch (IOException e) {
 			System.out.println("[SYSTEM] Error getting input stream from socket.");
 		}
-		while (socket.isConnected()) {
-			try {
-				String cyperText = in.readLine();
-				String [] cyperLetters = cyperText.split(" ");
-				System.out.println("[COMMUNICATION] Received message from " + socket.getRemoteSocketAddress().toString());
-				System.out.println("[COMMUNICATION] cyper text: " + cyperText);
-				System.out.print("[COMMUNICATION] plain text: ");
+		
+		try {
+			String cyperText = in.readLine();
+			String [] cyperLetters = cyperText.split(" ");
+			System.out.println("[COMMUNICATION] Received message from " + socket.getRemoteSocketAddress().toString());
+			System.out.println("[COMMUNICATION] cyper text: " + cyperText);
+			System.out.print("[COMMUNICATION] plain text: ");
 
-				for (int i = 0; i < cyperLetters.length; ++i) {
-					try {
-						System.out.println((char) RSA.endecrypt(Long.valueOf(privateKey.d), privateKey.d, privateKey.c));
-					} catch (Exception e) {
-						
-					}
+			for (int i = 0; i < cyperLetters.length; ++i) {
+				try {
+					if (cyperLetters[i].length() > 0)
+						System.out.print((char) RSA.endecrypt(Long.valueOf(cyperLetters[i]), privateKey.d, privateKey.c));
+				} catch (Exception e) {
+					
 				}
-			} catch (IOException e) {
-				System.out.println("[SYSTEM] I/O Error with " + socket.getRemoteSocketAddress().toString());
 			}
+			System.out.println();
+			System.out.println();
+
+			socket.close();
 			
+		} catch (Exception e) {
+			System.out.println("[SYSTEM] I/O Error with " + socket.getRemoteSocketAddress().toString());
 		}
+			
 
 	}
 

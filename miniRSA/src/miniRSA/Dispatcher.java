@@ -42,9 +42,11 @@ public class Dispatcher implements Runnable {
 			while(true) {
 				try {
 					Thread wk;
-					(wk = new Thread(new Worker(listener.accept(), privateKey))).start();
+					Socket s = listener.accept();
+					(wk = new Thread(new Worker(s, privateKey))).start();
 				} catch(SocketTimeoutException e) {
-					
+					//System.out.println("Dispatcher timeout.");
+
 				}
 				
 				if (Thread.interrupted()) {
