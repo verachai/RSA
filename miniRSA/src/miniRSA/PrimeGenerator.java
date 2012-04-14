@@ -23,7 +23,9 @@ public class PrimeGenerator {
 				}
 				if (j == prime.size()) prime.add(x);
 				x++;
-			} while (x <= Integer.MAX_VALUE);
+				if (x % 1000000 == 0)
+					System.out.println(x/1000000 + "M");
+			} while (x <= 1000000);
 
 			for (int p: prime) {
 				bufWriter.write(p + "\n");
