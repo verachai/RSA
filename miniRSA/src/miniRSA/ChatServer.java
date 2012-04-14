@@ -33,7 +33,7 @@ public class ChatServer {
 		BufferedReader sysCommand = null;
 		String cmd = null;
 		sysCommand = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("\"-S\" to Shutdown ChatServer.");
+		System.out.println("[SYSTEM] \"-S\" to Shutdown ChatServer.");
 		while (true){
 			try {
 				cmd = sysCommand.readLine();
@@ -43,13 +43,13 @@ public class ChatServer {
 				disp.interrupt();
 				break;
 			} else {
-				System.out.println("Unrecognized Command.\n ");
+				System.out.println("[SYSTEM] Unrecognized Command.\n ");
 			}
 		}
 		try {
 			disp.join();
 		} catch (InterruptedException e) {}
-		System.out.println("ChatServer stopped.");
+		System.out.println("[SYSTEM] ChatServer stopped.");
 		
 	}
 

@@ -37,23 +37,23 @@ public class Dispatcher implements Runnable {
 			// Bind to port
 			ServerSocket listener = new ServerSocket(port);
 			listener.setSoTimeout(1000);
-			System.out.println("Server Started: " + listener.toString());
+			System.out.println("[SYSTEM] Server Started: " + listener.toString());
 			// Listen and accept
 			while(true) {
 				try {
 					Thread wk;
-					(wk = new Thread(new Worker(listener.accept()))).start();
+					(wk = new Thread(new Worker(listener.accept(), privateKey))).start();
 				} catch(SocketTimeoutException e) {
 					
 				}
 				
 				if (Thread.interrupted()) {
-					System.out.println("Dispatcher Stopped.");
+					System.out.println("[SYSTEM] Dispatcher Stopped.");
 					return;
 				}
 			}
 		} catch (IOException e) {
-			System.err.println("Error binding to port " + port + ".");
+			System.err.println("[SYSTEM] Error binding to port " + port + ".");
 		}
 		
 	}
