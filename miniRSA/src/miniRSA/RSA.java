@@ -145,14 +145,28 @@ public class RSA {
 			e.printStackTrace();
 		}
 
-		generateKeys(prime);
+//		generateKeys(prime);
 //		runEncryption(prime);
 //		runDecryption(prime);
 //		runCracking(prime);
 		
 	}
 	
-	private static void generateKeys(ArrayList<Integer> prime) {
+	private static void generateKeys() {
+		ArrayList<Integer> prime = new ArrayList<Integer>();
+		try {
+			FileReader file = new FileReader("Prime Number List.txt");
+			BufferedReader reader = new BufferedReader(file);
+			
+			while (reader.ready()) {
+				prime.add(Integer.parseInt(reader.readLine()));
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		Scanner read = new Scanner(System.in);
 
 		System.out.println("Enter the nth and mth prime number to compute");
