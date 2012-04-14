@@ -11,6 +11,22 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class RSA {
+	
+	public static ArrayList<Integer> primes = new ArrayList<Integer>();
+	
+	public static void loadPrimes() {
+		try {
+			FileReader file = new FileReader("Prime Number List.txt");
+			BufferedReader reader = new BufferedReader(file);
+			
+			while (reader.ready()) {
+				primes.add(Integer.parseInt(reader.readLine()));
+			}
+			System.out.println("Read " + primes.size() + " primes from file.");
+		} catch (Exception e) {
+			System.err.println("Error reading prime list.");
+		}
+	}
 
 	public static long GCD(long a, long b) {
 		long x = a, y = b;
@@ -130,96 +146,45 @@ public class RSA {
 		return modulo(msg_or_cipher, key, c);
 	}
 
-	public static void main(String[] args) {
-		ArrayList<Integer> prime = new ArrayList<Integer>();
-		try {
-			FileReader file = new FileReader("Prime Number List.txt");
-			BufferedReader reader = new BufferedReader(file);
-			
-			while (reader.ready()) {
-				prime.add(Integer.parseInt(reader.readLine()));
-			}
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-//		generateKeys(prime);
-//		runEncryption(prime);
-//		runDecryption(prime);
-//		runCracking(prime);
-		
-	}
-	
-	private static void generateKeys() {
-		ArrayList<Integer> prime = new ArrayList<Integer>();
-		try {
-			FileReader file = new FileReader("Prime Number List.txt");
-			BufferedReader reader = new BufferedReader(file);
-			
-			while (reader.ready()) {
-				prime.add(Integer.parseInt(reader.readLine()));
-			}
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public static KeyPair generateKey() {
 		
 		Scanner read = new Scanner(System.in);
 
-		System.out.println("Enter the nth and mth prime number to compute");
-		
-		int n1 = read.nextInt();
-		int n2 = read.nextInt();
-		int a = prime.get(n1);
-		int b = prime.get(n2);
+		System.out.println("Enter the nth and mth prime number to compute: ");
+		boolean inputValid = false;
+		int n1;
+		int n2;
+		do {
+			n1 = read.nextInt();
+			n2 = read.nextInt();
+			if (n1 >= 1 && n1 <= primes.size() && n2 >= 1 && n2 <= primes.size()) {
+				inputValid = true;
+			} else {
+				System.out.println("Input invalid. Please try again: ");
+			}
+		} while (!inputValid);
+		int a = primes.get(n1 - 1);
+		int b = primes.get(n2 - 1);
 		long c = a * b;
 		long m = (a - 1) * (b - 1);
 		long e = coprime(m);
 		long d = mod_inverse(e, m);
+		
+		PubKey pub = new PubKey(e, c);
+		PriKey pri = new PriKey(d, c);
+		KeyPair pr = new KeyPair(pub, pri);
+		
 		System.out.println(n1 + "th prime = " + a + ", " + n2 + "th prime = " + b);
 		System.out.println("c = " + c + ", m = " + m + ", e = " + e + ", d = " + d);
 		System.out.println("Public Key = (" + e + ", " + c + ")");
 		System.out.println("Private Key = (" + d + ", " + c + ")");
-	}
-	
-	private static void runEncryption(ArrayList<Integer> prime) {
-		Scanner read = new Scanner(System.in);
 		
-		System.out.println("Enter the pulic key value (e, c): first e, then c");
-		int public_e = read.nextInt();
-		int public_c = read.nextInt();
-
-		System.out.println("\nPlease enter a sentence to encrypt: ");
-		read = new Scanner(System.in);
-		String sentence = read.nextLine();
-		long[] encryption = new long[sentence.length()];
-		for (int i = 0; i < sentence.length(); i++) {
-			encryption[i] = endecrypt(sentence.charAt(i), public_e, public_c);
-			System.out.println(encryption[i]);
-		}
-	}
-	
-	private static void runDecryption(ArrayList<Integer> prime) {
-		Scanner read = new Scanner(System.in);
-
-		System.out.println("Please enter the private key (d, c): first d, then c");
-		int private_d = read.nextInt();
-		int private_c = read.nextInt();
-		
-		while (true) {
-			System.out.println("Enter next char cipher value as an int, type quit to quit");
-			if (!read.hasNextInt()) break;
-			int cipher = read.nextInt();
-			long decryption = endecrypt(cipher, private_d, private_c);
-			System.out.println((char)decryption + " " + decryption);
-		}
+		return pr;
 
 	}
 	
-	private static void runCracking(ArrayList<Integer> prime) {
+	private static void runCracking() {
 		Scanner read = new Scanner(System.in);
 
 		System.out.println("Enter the pulic key value (e, c): first e, then c");
@@ -227,7 +192,7 @@ public class RSA {
 		int public_c = read.nextInt();
 		int aa = 0, bb = 0;
 		
-		for (int p: prime) {
+		for (int p: primes) {
 			if (public_c % p == 0) {
 				aa = p;
 				break;

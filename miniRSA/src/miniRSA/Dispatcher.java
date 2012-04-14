@@ -13,20 +13,20 @@ import java.net.SocketTimeoutException;
  */
 public class Dispatcher implements Runnable {
 
-	private static long privateKey;
-	public static long publicKey;
+	private static PriKey privateKey;
+	public static PubKey publicKey;
 	
 	private int port;
 	/**
 	 * Constructor
 	 */
-	public Dispatcher(long pubkey, long prikey, int port) {
+	public Dispatcher(PubKey pubkey, PriKey prikey, int port) {
 		Dispatcher.privateKey = prikey;
 		Dispatcher.publicKey = pubkey;
 		this.port = port;
 	}
 	
-	public static void setKey(long pubkey, long prikey) {
+	public static void setKey(PubKey pubkey, PriKey prikey) {
 		Dispatcher.privateKey = prikey;
 		Dispatcher.publicKey = pubkey;
 	}
@@ -42,7 +42,7 @@ public class Dispatcher implements Runnable {
 			while(true) {
 				try {
 					Thread wk;
-					(wk = new Thread(new Worker(listener.accept()))).run();
+					(wk = new Thread(new Worker(listener.accept()))).start();
 				} catch(SocketTimeoutException e) {
 					
 				}
