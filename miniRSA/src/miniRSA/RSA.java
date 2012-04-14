@@ -154,15 +154,15 @@ public class RSA {
 		int b = prime.get(n2);
 		long c = a * b;
 		long m = (a - 1) * (b - 1);
-		long e = coprime(m);
+		long e = 451;//coprime(m);
 		long d = mod_inverse(e, m);
 		System.out.println(n1 + "th prime = " + a + ", " + n2 + "th prime = " + b);
 		System.out.println("c = " + c + ", m = " + m + ", e = " + e + ", d = " + d);
 		System.out.println("Public Key = (" + e + ", " + c + ")");
 		System.out.println("Private Key = (" + d + ", " + c + ")");
 
-		System.out.println("Please enter a sentence to encrypt: ");
-		read = new Scanner(System.in);
+		// Encryption
+		System.out.println("\nPlease enter a sentence to encrypt: ");
 		String sentence = read.nextLine();
 		long[] encryption = new long[sentence.length()];
 		for (int i = 0; i < sentence.length(); i++) {
@@ -170,5 +170,18 @@ public class RSA {
 			System.out.println(encryption[i]);
 		}
 		
+		// Decryption
+		System.out.println("\nPlease enter the private key (d, c): first d, then c");
+		int p_d = read.nextInt();
+		int p_c = read.nextInt();
+		while (true) {
+			System.out.println("Enter next char cipher value as an int, type quit to quit");
+			if (!read.hasNextInt()) break;
+			int cipher = read.nextInt();
+			long decryption = endecrypt(cipher, p_d, p_c);
+			System.out.println((char)decryption + " " + decryption);
+		}
+		
 	}
+	
 }
