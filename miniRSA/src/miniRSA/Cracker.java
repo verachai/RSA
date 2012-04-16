@@ -15,19 +15,8 @@ public class Cracker {
 		System.out.println("Enter the pulic key value (e, c): first e, then c");
 		int public_e = read.nextInt();
 		int public_c = read.nextInt();
-		int aa = 0, bb = 0;
 		
-		for (int p: RSA.primes) {
-			if (public_c % p == 0) {
-				aa = p;
-				break;
-			}
-		}
-		bb = public_c / aa;
-		long mm = (aa - 1) * (bb - 1);
-		System.out.println("a was " + aa + ", b was " + bb);
-		System.out.println("The totient was " + RSA.totient(mm));
-		long dd = RSA.mod_inverse(public_e, mm);
+		long dd = crack(public_e, public_c);
 		System.out.println("D was found to be " + dd);
 		
 		while(true) {
@@ -38,5 +27,49 @@ public class Cracker {
 			System.out.println("This char decrypted to " + result);
 			System.out.println("The letter is " + (char)result);
 		}
+	}
+	
+	/**
+	 * return d
+	 * @param e
+	 * @param c
+	 * @return
+	 */
+	public static long crack(long e, long c) {
+		if (RSA.primes.isEmpty()) RSA.loadPrimes();
+
+		long public_e = e;
+		long public_c = c;
+		
+		boolean isCracked = false;
+		long aa = -1;
+		for (int p: RSA.primes) {
+			aa = p;
+			if (public_c % p == 0) {
+				isCracked = true;
+				break;
+			}
+		}
+		long dd = -1;
+		if (isCracked) {
+			long bb = public_c / aa;
+			long mm = (aa - 1) * (bb - 1);
+			dd = RSA.mod_inverse(public_e, mm);
+		} else {
+			PrimeGenerator pg = new PrimeGenerator();
+			int n = RSA.primes.size();
+			while (!isCracked) {
+				aa = pg.get(n);
+				if (public_c % aa == 0) {
+					isCracked = true;
+					long bb = public_c / aa;
+					long mm = (aa - 1) * (bb - 1);
+					dd = RSA.mod_inverse(public_e, mm);
+					break;
+				}
+				n ++;
+			}
+		}
+		return dd;
 	}
 }

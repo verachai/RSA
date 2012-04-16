@@ -158,16 +158,28 @@ public class RSA {
 		do {
 			n1 = read.nextInt();
 			n2 = read.nextInt();
-			if (n1 >= 1 && n1 <= primes.size() && n2 >= 1 && n2 <= primes.size()) {
+			if (n1 >= 1 && n2 >= 1) {
 				inputValid = true;
 			} else {
 				System.out.println("Input invalid. Please try again: ");
 			}
 		} while (!inputValid);
-		int a = primes.get(n1 - 1);
-		int b = primes.get(n2 - 1);
+		int a = 0;
+		int b = 0;
+		if (n1 > primes.size() || n2 > primes.size()) {
+			PrimeGenerator pg = new PrimeGenerator();
+			a = pg.get(n1);
+			b = pg.get(n2);
+		} else {
+			a = primes.get(n1 - 1);
+			b = primes.get(n2 - 1);
+		}
 		long c = a * b;
 		long m = (a - 1) * (b - 1);
+		System.out.println(a);
+		System.out.println(b);
+		System.out.println(m);
+		// TODO fix the bugs here, thanks!
 		long e = coprime(m);
 		long d = mod_inverse(e, m);
 		
