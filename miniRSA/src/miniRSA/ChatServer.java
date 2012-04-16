@@ -17,6 +17,13 @@ public class ChatServer {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		if (args.length == 1) {
+			try {
+				portNumber = Integer.valueOf(args[0]);
+			} catch (Exception e) {
+				
+			}
+		}
 		// load primes
 		RSA.loadPrimes();
 		// generate key
