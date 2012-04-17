@@ -2,10 +2,10 @@ package miniRSA;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ChatClient {
@@ -28,7 +28,7 @@ public class ChatClient {
 		try {
 			SERVER_ADDRESS = args[0];
 			SERVER_PORT = Integer.valueOf(args[1]);
-			PUB_KEY = new PubKey(Long.valueOf(args[2]), Long.valueOf(args[3]));
+			PUB_KEY = new PubKey(new BigInteger(args[2]), new BigInteger(args[3]));
 		} catch (Exception e) {
 			System.out.println("Wrong argument format.");
 			System.out.println("ChatClient <serverAddress> <serverPort> <PubKey d> <PubKey c>");
@@ -46,10 +46,12 @@ public class ChatClient {
 			}
 			String cyperText = "";
 			for (int i = 0; i < tempLine.length(); ++i) {
-				long cyperLetter = RSA.endecrypt(Long.valueOf(tempLine.charAt(i)), PUB_KEY.e, PUB_KEY.c);
-				cyperText = cyperText + String.valueOf(cyperLetter) + " ";
+				BigInteger cyperLetter = RSA.endecrypt(BigInteger.valueOf(tempLine.charAt(i)), 
+												 PUB_KEY.e, PUB_KEY.c);
+				cyperText = cyperText + cyperLetter + " ";
 			}
-			
+			System.out.println();
+
 			// general socket and connect
 			Socket clientSocket = null;
 			PrintWriter out = null;
@@ -72,6 +74,7 @@ public class ChatClient {
 				out.close();
 				clientSocket.close();
 			} catch (IOException e) {
+				e.printStackTrace();
 			}
 
 		}

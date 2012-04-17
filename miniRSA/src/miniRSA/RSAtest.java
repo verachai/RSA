@@ -2,50 +2,55 @@ package miniRSA;
 
 import static org.junit.Assert.*;
 
+import java.math.BigInteger;
+
 import org.junit.Test;
 
 public class RSAtest {
 	
+	public BigInteger B(long i) {
+		return BigInteger.valueOf(i);
+	}
+	
 	@Test
 	public void testGCD() {
-		assertEquals(RSA.GCD(1, -11), 1);
-        assertEquals(RSA.GCD(100,10),10);
-        assertEquals(RSA.GCD(10,100),10);
-        assertEquals(RSA.GCD(100,13),1);
-        assertEquals(RSA.GCD(100,100),100);
-        assertEquals(RSA.GCD(13,39),13);
-        assertEquals(RSA.GCD(120,35),5);
-        assertEquals(RSA.GCD(1001,77),77);
-        assertEquals(RSA.GCD(1001,33),11);
+		assertEquals(RSA.GCD(B(1), B(-11)).compareTo(B(1)), 0);
+        assertEquals(RSA.GCD(B(100), B(10)).compareTo(B(10)), 0);
+        assertEquals(RSA.GCD(B(10), B(100)).compareTo(B(10)), 0);
+        assertEquals(RSA.GCD(B(100), B(13)).compareTo(B(1)), 0);
+        assertEquals(RSA.GCD(B(100), B(100)).compareTo(B(100)), 0);
+        assertEquals(RSA.GCD(B(13), B(39)).compareTo(B(13)), 0);
+        assertEquals(RSA.GCD(B(120), B(35)).compareTo(B(5)), 0);
+        assertEquals(RSA.GCD(B(1001), B(77)).compareTo(B(77)), 0);
+        assertEquals(RSA.GCD(B(1001), B(33)).compareTo(B(11)), 0);
 	}
 	
 	@Test
 	public void testComplicatedGCD() {
-        assertTrue(arrayEquals(RSA.complicatedGCD(77,33), new long[]{11,1,-2}));
-        assertTrue(arrayEquals(RSA.complicatedGCD(33,77), new long[]{11,-2,1}));
-        assertTrue(arrayEquals(RSA.complicatedGCD(13,37), new long[]{1,-17,6}));
-        assertTrue(arrayEquals(RSA.complicatedGCD(142312,2385), new long[]{1,-227,13545}));
-        assertTrue(arrayEquals(RSA.complicatedGCD(442,2278), new long[]{34,31,-6}));
+        assertTrue(arrayEquals(RSA.complicatedGCD(B(77), B(33)), new long[]{11,1,-2}));
+        assertTrue(arrayEquals(RSA.complicatedGCD(B(33), B(77)), new long[]{11,-2,1}));
+        assertTrue(arrayEquals(RSA.complicatedGCD(B(13), B(37)), new long[]{1,-17,6}));
+        assertTrue(arrayEquals(RSA.complicatedGCD(B(142312), B(2385)), new long[]{1,-227,13545}));
+        assertTrue(arrayEquals(RSA.complicatedGCD(B(442), B(2278)), new long[]{34,31,-6}));
 	}
 	
 	@Test
 	public void testMod_inverse() {
-        assertEquals(RSA.mod_inverse(3,17),6);
-        assertEquals(RSA.mod_inverse(55,123),85);
-        assertEquals(RSA.mod_inverse(45,223),114);
-        assertEquals(RSA.mod_inverse(2342,92830457),75588250);
-        assertEquals(RSA.mod_inverse(3,30),0);
+        assertEquals(RSA.mod_inverse(B(3), B(17)).compareTo(B(6)), 0);
+        assertEquals(RSA.mod_inverse(B(55), B(123)).compareTo(B(85)), 0);
+        assertEquals(RSA.mod_inverse(B(45), B(223)).compareTo(B(114)), 0);
+        assertEquals(RSA.mod_inverse(B(2342), B(92830457)).compareTo(B(75588250)), 0);
+        assertEquals(RSA.mod_inverse(B(3), B(30)).compareTo(B(0)), 0);
 	}
 	
 	@Test
 	public void testModulo() {
-        assertEquals(RSA.modulo(2,0,55),1);
-        assertEquals(RSA.modulo(2,4,1000),16);
-        assertEquals(RSA.modulo(2,6,5),4);
-        assertEquals(RSA.modulo(78,45,37),36);
-        assertEquals(RSA.modulo(89,1232,4623),1);
-        assertEquals(RSA.modulo(254,234,123),4);
-        assertEquals(RSA.modulo(2349723,423424,12345),696);
+        assertEquals(RSA.modulo(B(2), B(0), B(55)).compareTo(B(1)), 0);
+        assertEquals(RSA.modulo(B(2), B(6), B(5)).compareTo(B(4)), 0);
+        assertEquals(RSA.modulo(B(78), B(45), B(37)).compareTo(B(36)), 0);
+        assertEquals(RSA.modulo(B(89), B(1232), B(4623)).compareTo(B(1)), 0);
+        assertEquals(RSA.modulo(B(254), B(234), B(123)).compareTo(B(4)), 0);
+        assertEquals(RSA.modulo(B(2349723), B(423424), B(12345)).compareTo(B(696)), 0);
 	}
 	
 	@Test
@@ -61,10 +66,24 @@ public class RSAtest {
 		assertEquals(RSA.totient(218127142), 109063570);
 	}
 	
-	private boolean arrayEquals(long[] x, long[] y) {
+	@Test 
+	public void testEndecryption() {
+		BigInteger msg = B(873123422);
+		BigInteger a = new BigInteger("64245974067698974727308576291067189905635129662015537917175582385219809100094736540969262037560193877488366836626125921856719528308413429711"); 
+		BigInteger b = new BigInteger("5051274906171681915609732690658365816679515685799846683178436173836692151960702168161668828019540237543601958873479825452017776485422833955447384989249284184721");
+		BigInteger c = a.multiply(b);
+		BigInteger m = (a.add(BigInteger.ONE.negate())).multiply(b.add(BigInteger.ONE.negate()));
+		BigInteger e = RSA.coprime(m);
+		BigInteger d = RSA.mod_inverse(e, m);
+//		System.out.println("c = " + c + " m = " + m + "\ne = " + e + " d = " + d);
+//		System.out.println(RSA.endecrypt(RSA.endecrypt(msg, e, c), d, c));
+		assertEquals(RSA.endecrypt(RSA.endecrypt(msg, e, c), d, c).compareTo(msg), 0);
+	}
+	
+	private boolean arrayEquals(BigInteger[] x, long[] y) {
 		if (x.length != y.length) return false;
 		for (int i = 0; i < x.length; i++) 
-			if (x[i] != y[i]) return false;
+			if (x[i].longValue() != y[i]) return false;
 		return true;
 	}
 }

@@ -1,10 +1,12 @@
 package miniRSA;
 
+import java.math.BigInteger;
+
 public class PubKey {
-	public long c;
-	public long e;
+	public BigInteger c;
+	public BigInteger e;
 	
-	public PubKey(long e, long c) {
+	public PubKey(BigInteger e, BigInteger c) {
 		this.c = c;
 		this.e = e;
 	}

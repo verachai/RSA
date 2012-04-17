@@ -1,5 +1,6 @@
 package miniRSA;
 
+import java.math.BigInteger;
 import java.util.Scanner;
 
 public class Cracker {
@@ -16,16 +17,16 @@ public class Cracker {
 		int public_e = read.nextInt();
 		int public_c = read.nextInt();
 		
-		long dd = crack(public_e, public_c);
+		BigInteger dd = crack(BigInteger.valueOf(public_e), BigInteger.valueOf(public_c));
 		System.out.println("d was found to be " + dd);
 		
 		while(true) {
 			System.out.println("Enter a number to encrypt/decrypt, or quit to exit");
 			if (!read.hasNextInt()) break;
 			int num = read.nextInt();
-			long result = RSA.endecrypt(num, dd, public_c);
+			BigInteger result = RSA.endecrypt(BigInteger.valueOf(num), dd, BigInteger.valueOf(public_c));
 			System.out.println("This char decrypted to " + result);
-			System.out.println("The letter is " + (char)result);
+			System.out.println("The letter is " + (char) result.intValue());
 		}
 	}
 	
@@ -35,35 +36,35 @@ public class Cracker {
 	 * @param c
 	 * @return
 	 */
-	public static long crack(long e, long c) {
+	public static BigInteger crack(BigInteger e, BigInteger c) {
 		if (RSA.primes.isEmpty()) RSA.loadPrimes();
 
-		long public_e = e;
-		long public_c = c;
+		BigInteger public_e = e;
+		BigInteger public_c = c;
 		
 		boolean isCracked = false;
 		long aa = -1;
 		for (int p: RSA.primes) {
 			aa = p;
-			if (public_c % p == 0) {
+			if (public_c.mod(BigInteger.valueOf(p)).compareTo(BigInteger.ZERO) == 0) {
 				isCracked = true;
 				break;
 			}
 		}
-		long dd = -1;
+		BigInteger dd = BigInteger.valueOf(-1);
 		if (isCracked) {
-			long bb = public_c / aa;
-			long mm = (aa - 1) * (bb - 1);
+			long bb = public_c.divide(BigInteger.valueOf(aa)).longValue();
+			BigInteger mm = BigInteger.valueOf(aa - 1).multiply(BigInteger.valueOf(bb-1));
 			dd = RSA.mod_inverse(public_e, mm);
 		} else {
 			PrimeGenerator pg = new PrimeGenerator();
 			int n = RSA.primes.size();
 			while (!isCracked) {
 				aa = pg.get(n);
-				if (public_c % aa == 0) {
+				if (public_c.mod(BigInteger.valueOf(aa)).compareTo(BigInteger.ZERO) == 0) {
 					isCracked = true;
-					long bb = public_c / aa;
-					long mm = (aa - 1) * (bb - 1);
+					long bb = public_c.divide(BigInteger.valueOf(aa)).longValue();
+					BigInteger mm = BigInteger.valueOf(aa - 1).multiply(BigInteger.valueOf(bb-1));
 					dd = RSA.mod_inverse(public_e, mm);
 					break;
 				}

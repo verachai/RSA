@@ -1,2 +1,65 @@
+CIT 595 MiniRSA Project
+
+Name: 
 Mengyao Chai (mengyaoc)
 Yue Ning (yning)
+
+---------------------
+Description
+---------------------
+
+This program implements a threaded chat server and client application in Java with the following functions:
+1) Secure message communication: the RSA cryptosystem is utilized to encrypt and decrypt messages so as to ensure the confidential communication between the server and its client.
+    - Generate public and private keys:    
+       - First of all, a command line request is prompted to ask the user to input m and n, the 2 indices of the prime numbers a and b. The program will first look up the indices in the file "Prime Number List.txt". If either index exceeds the current size of the prime number list, an additional number of integers will be checked until the desired size is achieved.
+       - Secondly, the following computation is performed once the retrieval of a and b is done: c = a*b, m = (a-1)*(b-1)
+       - Lastly, a number e, coprime to m, is obtained to form the public key (e, c); consequently, the modular inverse of e mod m, d combined with c form the private key (d, c).
+    
+    - Client encrypts message with public key:
+       - Upon the rece
+     
+2) Public-key cracking: an additional program is implemented, aiming at interrupting other teams' traffic and brute-force cracking their public key.
+
+
+---------------------
+Structure
+---------------------
+Server-Client Model:
+    The threaded server is able to handle asynchronous message reception and delivery. It has a console interface which interacts with the client. 
+    
+RSA Algorithm:
+
+Efficient Cracking Algorithm:
+
+
+
+---------------------
+Compile
+---------------------
+
+          
+---------------------
+Run
+---------------------
+
+To estimate the running time of the single-threaded version, type:
+    ./bank-serial -a <number-of-accounts> -i <num-of-transactions> -t <think-time>
+
+To estimate the running time of the unsynchronized multi-threaded version, type:
+    ./bank-parallel -a <number-of-accounts> -i <num-of-transactions> -t <think-time> -n <num-of-threads>
+
+To estimate the running time of the synchronized multi-threaded version, type:
+    ./bank-synch -a <number-of-accounts> -i <num-of-transactions> -t <think-time> -n <num-of-threads>
+
+
+---------------------
+Sample Run
+---------------------
+
+    
+---------------------
+Repository on GIT
+---------------------
+URL: https://github.com/verachai/RSA
+
+

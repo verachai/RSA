@@ -1,10 +1,12 @@
 package miniRSA;
 
+import java.math.BigInteger;
+
 public class PriKey {
-	public long c;
-	public long d;
+	public BigInteger c;
+	public BigInteger d;
 	
-	public PriKey(long d, long c) {
+	public PriKey(BigInteger d, BigInteger c) {
 		this.c = c;
 		this.d = d;
 	}

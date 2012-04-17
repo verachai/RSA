@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
  */
 public class ChatServer {
 	
-	public static int portNumber = 8081;
+	public static int portNumber = 8080;
 
 	/**
 	 * @param args

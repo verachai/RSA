@@ -37,7 +37,7 @@ public class PrimeGenerator {
 				x++;
 				if (x % 100000 == 0)
 					System.out.println(x/100000 + "M");
-			} while (x <= 1000000);
+			} while (x <= 2000000);
 
 			for (int p: prime) {
 				bufWriter.write(p + "\n");

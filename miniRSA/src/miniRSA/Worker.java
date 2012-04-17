@@ -3,6 +3,7 @@ package miniRSA;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.net.Socket;
 
 /**
@@ -40,7 +41,8 @@ public class Worker implements Runnable {
 			for (int i = 0; i < cyperLetters.length; ++i) {
 				try {
 					if (cyperLetters[i].length() > 0)
-						System.out.print((char) RSA.endecrypt(Long.valueOf(cyperLetters[i]), privateKey.d, privateKey.c));
+						System.out.print((char) RSA.endecrypt(new BigInteger(cyperLetters[i]), 
+								  privateKey.d, privateKey.c).intValue());
 				} catch (Exception e) {
 					
 				}
