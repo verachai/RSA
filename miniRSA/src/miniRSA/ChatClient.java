@@ -28,7 +28,7 @@ public class ChatClient {
 		try {
 			SERVER_ADDRESS = args[0];
 			SERVER_PORT = Integer.valueOf(args[1]);
-			PUB_KEY = new PubKey(Integer.valueOf(args[2]), Integer.valueOf(args[3]));
+			PUB_KEY = new PubKey(Long.valueOf(args[2]), Long.valueOf(args[3]));
 		} catch (Exception e) {
 			System.out.println("Wrong argument format.");
 			System.out.println("ChatClient <serverAddress> <serverPort> <PubKey d> <PubKey c>");

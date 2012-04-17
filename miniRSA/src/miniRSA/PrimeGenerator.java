@@ -27,6 +27,8 @@ public class PrimeGenerator {
 			
 			int x = 4;
 			int j = 0;
+			prime.add(2);
+			prime.add(3);
 			do {
 				for (j = 0; j < prime.size(); j++) {
 					if (x % prime.get(j) == 0) break;

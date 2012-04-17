@@ -65,8 +65,8 @@ public class RSA {
 	public static long coprime(long x) {
 		Random rand = new Random();
 		while(true) {
-			long y = rand.nextLong();
-			if (GCD(x, y) == 1)
+			long y = rand.nextInt();
+			if (y > 0 && GCD(x, y) == 1)
 				return y;
 		}
 	}
