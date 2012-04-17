@@ -68,7 +68,7 @@ public class Cracker {
 					dd = RSA.mod_inverse(public_e, mm);
 					break;
 				}
-				n ++;
+				n++;
 			}
 		}
 		return dd;

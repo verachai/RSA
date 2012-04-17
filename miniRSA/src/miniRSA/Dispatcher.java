@@ -15,8 +15,8 @@ public class Dispatcher implements Runnable {
 
 	private static PriKey privateKey;
 	public static PubKey publicKey;
-	
 	private int port;
+
 	/**
 	 * Constructor
 	 */

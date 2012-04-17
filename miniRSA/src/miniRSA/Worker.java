@@ -16,12 +16,12 @@ public class Worker implements Runnable {
 	
 	private Socket socket;
 	private PriKey privateKey;
-
+	
 	Worker(Socket s, PriKey pri) {
 		this.socket = s;
 		this.privateKey = pri;
 	}
-	
+
 	@Override
 	public void run() {
 		BufferedReader in = null;

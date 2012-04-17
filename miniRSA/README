@@ -4,34 +4,101 @@ Name:
 Mengyao Chai (mengyaoc)
 Yue Ning (yning)
 
+
 ---------------------
 Description
 ---------------------
+This program implements a threaded chat server and client application in Java 6 with the following functions:
 
-This program implements a threaded chat server and client application in Java with the following functions:
-1) Secure message communication: the RSA cryptosystem is utilized to encrypt and decrypt messages so as to ensure the confidential communication between the server and its client.
-    - Generate public and private keys:    
-       - First of all, a command line request is prompted to ask the user to input m and n, the 2 indices of the prime numbers a and b. The program will first look up the indices in the file "Prime Number List.txt". If either index exceeds the current size of the prime number list, an additional number of integers will be checked until the desired size is achieved.
-       - Secondly, the following computation is performed once the retrieval of a and b is done: c = a*b, m = (a-1)*(b-1)
-       - Lastly, a number e, coprime to m, is obtained to form the public key (e, c); consequently, the modular inverse of e mod m, d combined with c form the private key (d, c).
-    
-    - Client encrypts message with public key:
-       - Upon the rece
+1) Secure message communication: utilize the RSA cryptographic algorithm to ensure the confidential communication between the server and the client.
+    Procedure:
+    - User is required to enter m and n as the indices of 2 prime numbers;
+    - Given 2 prime numbers, the server generates a pair of public key and a pair of private key;
+    - Once a client is connected to the server, the public key is distributed to the client;
+    - Upon receiving the public key, the client encrypts its message using the public key;
+    - The encrypted text is passed back to the server;
+    - The server uses the private key to decrypt the message.
      
-2) Public-key cracking: an additional program is implemented, aiming at interrupting other teams' traffic and brute-force cracking their public key.
-
+2) Public-key cracking: interrupt other teams' traffic and use brute-force algorithm to crack their public key.
+    - User is required to enter a pair of public key published by other teams;
+    - The program cracks the public key using brute-force algorithm to obtain the corresponding private key;
+    - Once the private key is acquired, other team's ciphertext can be decrypted with the key.
 
 ---------------------
 Structure
 ---------------------
-Server-Client Model:
-    The threaded server is able to handle asynchronous message reception and delivery. It has a console interface which interacts with the client. 
+Server: Dispatcher/Worker Model
+    The multithreaded server is able to handle asynchronous message reception and delivery. The server and client interact via console interfaces.
+    - ChatServer.java: 
+        This class creates a server using console interface to get user inputs as well as display client/server communications.
+    - Dispatcher.java: 
+        This class creates a dispatcher thread when called. The dispatcher thread dispatches each client request to a specific worker thread.
+    - Worker.java: 
+        This class creates a worker thread to handle a client request when called.
+
+Client: 
+    Though only one client is implemented in this program, multiple clients can be implemented to interact with the server.
+    - ChatClient.java:
+        This class creates a client interface to let the user input messages.
+
+Cracker:
+    - Cracker.java:
+        This class allows the user to input a pair of public keys and then uses brute-force algorithm to guess the private key and decrypt the ciphertext.
+    Refer to "Prime Number Retrieval" in the "Algorithms" section for efficient brute-force cracking.
     
-RSA Algorithm:
+RSA:        
+    - RSA.java: 
+        This class contains several methods to perform the RSA algorithm. To avoid large number overflow, all the methods adopt BigInteger data type.
+        - public static BigInteger coprime(BigInteger x): 
+        return a random BigInteger which is coprime to the given parameter x.
+        - public static BigInteger[] complicatedGCD(BigInteger a, BigInteger b): 
+            return an array of 3 elements, say x, y and z, such that x is the GCF of a and b, and x = a * y + b * z.
+        - public static BigInteger GCD(BigInteger a, BigInteger b):
+            return the greatest common divisor between a and b.
+        - public static BigInteger mod_inverse(BigInteger base, BigInteger m):
+            return the modular inverse of base mod m.
+        - public static BigInteger modulo(BigInteger a, BigInteger b, BigInteger c):
+            return a^b mod c.
+        - public static long totient(long n):
+            return Euler's Totient for the parameter n.
+        - public static BigInteger endecrypt(BigInteger msg_or_cipher, BigInteger key, BigInteger c):
+            given a BigInteger representing the message or ciphertext, use the keys to either encrypt or decrypt it via the RSA crypto algorithm.
+        - public static void loadPrimes():
+            load all the prime numbers into the ArrayList from the "Prime Number List.txt" file.
+        - public static KeyPair generateKey():
+            ask for 2 prime number indices and return a pair of public and private key.     
+    - RSAtest.java:
+        This class tests the key methods in the above class.
 
-Efficient Cracking Algorithm:
-
-
+Other auxiliary classes:
+    - PrimeGenerator.java:
+        This class first generates all the prime numbers less than 2,000,000. If requested, it can continue generate more prime numbers.
+    - KeyPair.java:
+        This class creates a pair of public key (e, c) and private key (d, c).
+    - PubPair.java:
+        This class creates a pair of public key (e, c).
+    - PriPair.java:
+        This class creates a pair of private key (d, c). 
+    
+---------------------
+Algorithms
+---------------------
+1) Prime Number Retrieval:
+    - To reduce the time in checking prime numbers, a "Prime Number List.txt" file is first generated which consists of all the prime numbers less than 2,000,000;
+    - When the program starts, the file is loaded and an ArrayList is created to store all the prime numbers in the file;
+    - When the user inputs an index of the desired prime number, the program first look up in the ArrayList. If the index exceeds the size of ArrayList, the program recursively checks an additional 100,000 number of integers and expands the ArrayList to include the new prime numbers.
+    
+2) RSA Algorithm:
+    - Given 2 prime numbers a and b, compute c = a*b, and m = (a-1)*(b-1);
+    - The encryption key, e, is any number coprime to m;
+    - The decryption key, d, is the modular inverse of e mod m;
+    - Consequently, we obtain public key(e, c) and private key(d, c).
+        
+3) Brute-force Cracking Algorithm:
+    - Given a pair of public key (e, c), starting from the first element in the prime number ArrayList, try to find a factor, p, which is divisible by c.
+    - Once p is found, compute q = c / p, m = (p-1)*(q-1), d = mod_inverse(e, m);
+    - (d, c) is the desired private key;
+    - Use this pair of key to decrypt ciphertext from other teams.
 
 ---------------------
 Compile
@@ -41,15 +108,6 @@ Compile
 ---------------------
 Run
 ---------------------
-
-To estimate the running time of the single-threaded version, type:
-    ./bank-serial -a <number-of-accounts> -i <num-of-transactions> -t <think-time>
-
-To estimate the running time of the unsynchronized multi-threaded version, type:
-    ./bank-parallel -a <number-of-accounts> -i <num-of-transactions> -t <think-time> -n <num-of-threads>
-
-To estimate the running time of the synchronized multi-threaded version, type:
-    ./bank-synch -a <number-of-accounts> -i <num-of-transactions> -t <think-time> -n <num-of-threads>
 
 
 ---------------------
@@ -62,4 +120,15 @@ Repository on GIT
 ---------------------
 URL: https://github.com/verachai/RSA
 
+---------------------
+Comments
+---------------------
+1) Prime Number ArrayList:
+    - The use of the prime number ArrayList can facilitate prime number checking. Instead of incrementing by 1 in each loop, the program checks potential factors, thus significantly reducing the number of unnecessary checks.
+Cons:
+    - However, the ArrayList will take up a considerably large amount of memory when a huge prime number is requested.
 
+2) Brute-force Cracking:
+    - This algorithm becomes less efficient for large public keys. 
+    - Since the encryption is carried out character by character in this program, more sophisticated cracking, such as guessing character frequency and usage, might be more efficient.
+    
