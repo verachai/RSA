@@ -46,12 +46,6 @@ public class RSAtest {
         assertEquals(RSA.modulo(89,1232,4623),1);
         assertEquals(RSA.modulo(254,234,123),4);
         assertEquals(RSA.modulo(2349723,423424,12345),696);
-//        long n = 313135419829591;
-//        long d = 53390193787969;
-//        long e = 19913737;
-//        long s = 237692323384979;
-//        assertEquals(RSA.modulo(104,e,n),s);
-//        assertEquals(RSA.modulo(s,d,n),104);
 	}
 	
 	@Test

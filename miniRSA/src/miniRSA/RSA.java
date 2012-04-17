@@ -65,7 +65,7 @@ public class RSA {
 	public static long coprime(long x) {
 		Random rand = new Random();
 		while(true) {
-			long y = rand.nextInt((int) x);
+			long y = rand.nextLong();
 			if (GCD(x, y) == 1)
 				return y;
 		}
@@ -174,8 +174,8 @@ public class RSA {
 			a = primes.get(n1 - 1);
 			b = primes.get(n2 - 1);
 		}
-		long c = a * b;
-		long m = (a - 1) * (b - 1);
+		long c = (long)a * (long)b;
+		long m = (long)(a - 1) * (long)(b - 1);
 		System.out.println(a);
 		System.out.println(b);
 		System.out.println(m);

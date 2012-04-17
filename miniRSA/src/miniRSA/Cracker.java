@@ -17,7 +17,7 @@ public class Cracker {
 		int public_c = read.nextInt();
 		
 		long dd = crack(public_e, public_c);
-		System.out.println("D was found to be " + dd);
+		System.out.println("d was found to be " + dd);
 		
 		while(true) {
 			System.out.println("Enter a number to encrypt/decrypt, or quit to exit");
