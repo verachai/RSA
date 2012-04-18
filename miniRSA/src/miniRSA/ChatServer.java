@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 public class ChatServer {
 	
 	public static int portNumber = 8080;
+	public static KeyPair keyPair;
 
 	/**
 	 * @param args
@@ -28,6 +29,7 @@ public class ChatServer {
 		RSA.loadPrimes();
 		// generate key
 		KeyPair pair = RSA.generateKey();
+		keyPair = pair;
 		// Start dispatcher
 		Thread disp;
 		(disp = new Thread(new Dispatcher(pair.pub, pair.pri, portNumber))).start();

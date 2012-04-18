@@ -3,8 +3,10 @@ package miniRSA;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  * Class to handle a request from client
@@ -24,6 +26,18 @@ public class Worker implements Runnable {
 
 	@Override
 	public void run() {
+		
+		// output my public key
+		PrintWriter out = null;
+		try {
+            out = new PrintWriter(socket.getOutputStream(), true);
+		} catch (IOException e) {
+			System.err.println("I/O Exception.");
+		}
+		String pub = ChatServer.keyPair.pub.e.toString() + " " + ChatServer.keyPair.pub.c.toString();
+		out.println(pub);
+		
+		// read from client
 		BufferedReader in = null;
 		try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
