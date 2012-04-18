@@ -56,7 +56,6 @@ public class ChatClient {
 				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 				// read and generate the pub key
 				String pub = in.readLine();
-				System.out.println(pub);
 				String [] params = pub.split(" ");
 				PubKey pk = new PubKey(new BigInteger(params[0]), new BigInteger(params[1]));
 				PUB_KEY = pk;
