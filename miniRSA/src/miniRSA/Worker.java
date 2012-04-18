@@ -49,8 +49,8 @@ public class Worker implements Runnable {
 			String cyperText = in.readLine();
 			String [] cyperLetters = cyperText.split(" ");
 			System.out.println("[COMMUNICATION] Received message from " + socket.getRemoteSocketAddress().toString());
-			System.out.println("[COMMUNICATION] cyper text: " + cyperText);
-			System.out.print("[COMMUNICATION] plain text: ");
+			System.out.println("[COMMUNICATION] Cyper text: " + cyperText);
+			System.out.print("[COMMUNICATION] Plain text: ");
 
 			for (int i = 0; i < cyperLetters.length; ++i) {
 				try {

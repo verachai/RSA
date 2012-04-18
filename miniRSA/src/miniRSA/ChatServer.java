@@ -42,7 +42,7 @@ public class ChatServer {
 		BufferedReader sysCommand = null;
 		String cmd = null;
 		sysCommand = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("[SYSTEM] \"-S\" to Shutdown ChatServer.");
+		System.out.println("[SYSTEM] \"-S\" to Shutdown ChatServer.\n");
 		while (true){
 			try {
 				cmd = sysCommand.readLine();

@@ -179,6 +179,7 @@ public class RSA {
 		PriKey pri = new PriKey(d, c);
 		KeyPair pr = new KeyPair(pub, pri);
 		
+		System.out.println();
 		System.out.println(n1 + "th prime = " + a + ", " + n2 + "th prime = " + b);
 		System.out.println("c = " + c + ", m = " + m + ", e = " + e + ", d = " + d);
 		System.out.println("Public Key = (" + e + ", " + c + ")");
