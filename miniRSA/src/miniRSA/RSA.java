@@ -172,9 +172,6 @@ public class RSA {
 		}
 		BigInteger c = BigInteger.valueOf(a).multiply(BigInteger.valueOf(b));
 		BigInteger m = BigInteger.valueOf(a-1).multiply(BigInteger.valueOf(b-1));
-		System.out.println(a);
-		System.out.println(b);
-		System.out.println(m);
 		BigInteger e = coprime(m);
 		BigInteger d = mod_inverse(e, m);
 		
