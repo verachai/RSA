@@ -14,17 +14,26 @@ public class Cracker {
 		Scanner read = new Scanner(System.in);
 
 		System.out.println("Enter the pulic key value (e, c): first e, then c");
-		int public_e = read.nextInt();
-		int public_c = read.nextInt();
+		BigInteger public_e = read.nextBigInteger();
+		BigInteger public_c = read.nextBigInteger();
 		
-		BigInteger dd = crack(BigInteger.valueOf(public_e), BigInteger.valueOf(public_c));
+		BigInteger dd = crack(public_e, public_c);
 		System.out.println("d was found to be " + dd);
 		
 		while(true) {
-			System.out.println("Enter a number to encrypt/decrypt, or quit to exit");
-			if (!read.hasNextInt()) break;
-			int num = read.nextInt();
-			BigInteger result = RSA.endecrypt(BigInteger.valueOf(num), dd, BigInteger.valueOf(public_c));
+			System.out.println("\nEnter a number to encrypt/decrypt, or .quit to exit.");
+			String s = read.next();
+			if (s.equalsIgnoreCase(".quit")) { 
+				System.out.println("Cracking finished. Bye!");
+				break; 
+			}
+
+			while (!s.matches("[0-9]+")) {
+				System.out.println("This is not a valid number. Enter a number to encrypt/decrypt, or quit to exit.");
+				s = read.next();
+			}
+			BigInteger num = new BigInteger(s);
+			BigInteger result = RSA.endecrypt(num, dd, public_c);
 			System.out.println("This char decrypted to " + result);
 			System.out.println("The letter is " + (char) result.intValue());
 		}
