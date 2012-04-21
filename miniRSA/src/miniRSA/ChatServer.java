@@ -1,65 +1,38 @@
 package miniRSA;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-/**
- * 
- * @author Yue
- *
- */
 public class ChatServer {
 	
-	public static int portNumber = 8080;
+	public int portNumber = 8080;
 	public static KeyPair keyPair;
+	public boolean shouldStop = false;
+	Thread disp;
+	
+	public ChatServer(int port) {
+		portNumber = port;
+	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		if (args.length == 1) {
-			try {
-				portNumber = Integer.valueOf(args[0]);
-			} catch (Exception e) {
-				
-			}
-		}
+	public void init() {
 		// load primes
 		RSA.loadPrimes();
 		// generate key
 		KeyPair pair = RSA.generateKey();
 		keyPair = pair;
+		
 		// Start dispatcher
-		Thread disp;
-		(disp = new Thread(new Dispatcher(pair.pub, pair.pri, portNumber))).start();
+		disp = new Thread(new Dispatcher(keyPair.pub, keyPair.pri, portNumber));
+		disp.start();
 		
 		try {
 			Thread.sleep(1000); //Wait for the dispatcher to be ready
 		} catch (InterruptedException e1) {}
-		
-		// interactive command
-		BufferedReader sysCommand = null;
-		String cmd = null;
-		sysCommand = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("[SYSTEM] \"-S\" to Shutdown ChatServer.\n");
-		while (true){
-			try {
-				cmd = sysCommand.readLine();
-			} catch (IOException e) {}
-			
-			if (cmd.equalsIgnoreCase("-S")){  
-				disp.interrupt();
-				break;
-			} else {
-				System.out.println("[SYSTEM] Unrecognized Command.\n ");
-			}
-		}
+	}
+	
+	public void stopServer() {
+		disp.interrupt();
 		try {
 			disp.join();
 		} catch (InterruptedException e) {}
-		System.out.println("[SYSTEM] ChatServer stopped.");
 		
+		System.out.println("[SYSTEM] ChatServer stopped.");
 	}
-
 }
