@@ -14,6 +14,7 @@ public class ChatClient {
 	
 	public static String SERVER_ADDRESS;
 	public static int SERVER_PORT;
+	public static int CLIENT_PORT;
 	public static PubKey PUB_KEY;
 
 	/**
@@ -22,22 +23,26 @@ public class ChatClient {
 	public static void main(String[] args) {
 
 		// parse parameters
-		if (args.length != 2) {
+		if (args.length != 3) {
 			System.out.println("Wrong argument format.");
 //			System.out.println("ChatClient <serverAddress> <serverPort> <PubKey d> <PubKey c>");
-			System.out.println("ChatClient <serverAddress> <serverPort>");
+			System.out.println("ChatClient <serverAddress> <serverPort> <clientPort>");
 			return;
 		}
 		try {
 			SERVER_ADDRESS = args[0];
 			SERVER_PORT = Integer.valueOf(args[1]);
+			CLIENT_PORT = Integer.valueOf(args[2]);
 //			PUB_KEY = new PubKey(new BigInteger(args[2]), new BigInteger(args[3]));
 		} catch (Exception e) {
 			System.out.println("Wrong argument format.");
 //			System.out.println("ChatClient <serverAddress> <serverPort> <PubKey d> <PubKey c>");
-			System.out.println("ChatClient <serverAddress> <serverPort>");
+			System.out.println("ChatClient <serverAddress> <serverPort> <clientPort>");
 			return;
 		}
+		
+		ChatServer server = new ChatServer(CLIENT_PORT);
+		server.init();
 
 		while (true) {
 			// Read input and send
@@ -45,6 +50,7 @@ public class ChatClient {
 			System.out.println("Enter the text, \".bye\" to quit: ");
 			String tempLine = read.nextLine();
 			if (tempLine.equalsIgnoreCase(".bye")) {
+				server.stopServer();
 				read.close();
 				return;
 			}
