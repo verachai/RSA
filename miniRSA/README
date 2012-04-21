@@ -24,11 +24,12 @@ This program implements a threaded chat server and client application in Java 6 
     - The program cracks the public key using brute-force algorithm to obtain the corresponding private key;
     - Once the private key is acquired, other team's ciphertext can be decrypted with the key.
 
+
 ---------------------
 Structure
 ---------------------
 Server: Dispatcher/Worker Model
-    The multithreaded server is able to handle asynchronous message reception and delivery. The server and client interact via console interfaces.
+    The multi-threaded server is able to handle asynchronous message reception and delivery. The server and client interact via console interfaces.
     - ChatServer.java: 
         This class creates a server using console interface to get user inputs as well as display client/server communications.
     - Dispatcher.java: 
@@ -37,7 +38,7 @@ Server: Dispatcher/Worker Model
         This class creates a worker thread to handle a client request when called.
 
 Client: 
-    Though only one client is implemented in this program, multiple clients can be implemented to interact with the server.
+    Running the client class in 2 different computers can initiate a chat.
     - ChatClient.java:
         This class creates a client interface to let the user input messages.
 
@@ -79,6 +80,7 @@ Other auxiliary classes:
         This class creates a pair of public key (e, c).
     - PriPair.java:
         This class creates a pair of private key (d, c). 
+   
     
 ---------------------
 Algorithms
@@ -100,14 +102,42 @@ Algorithms
     - (d, c) is the desired private key;
     - Use this pair of key to decrypt ciphertext from other teams.
 
----------------------
-Compile
----------------------
 
+---------------------
+Build
+---------------------
+To build the program, type:
+    make
+    
+You will be notified at the end whether the build is successful or not.
+          
           
 ---------------------
 Run
 ---------------------
+1) Server / client:
+    - To run the server: (port number is set to 8080 by default)
+        make server
+    - To run the client on local machine for testing purpose:
+        make client 
+    - To run the client and communicate with a client on another computer:
+        cd bin; java miniRSA.ChatClient <server address> <server port> 
+    
+2) Cracking:
+    make cracker
+    
+    
+---------------------
+Clean
+---------------------
+Type: 
+    make clean
+
+
+---------------------
+Repository on GIT
+---------------------
+URL: https://github.com/verachai/RSA
 
 
 ---------------------
@@ -157,10 +187,6 @@ Sample Run
     Enter the text, ".bye" to quit: 
     .bye
 
----------------------
-Repository on GIT
----------------------
-URL: https://github.com/verachai/RSA
 
 ---------------------
 Comments
