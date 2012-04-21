@@ -116,17 +116,11 @@ You will be notified at the end whether the build is successful or not.
 Run
 ---------------------
 1) Server / client:
-    - To run the server/client on local machine for testing purpose:
-        make server (port number is set to 8080 by default)
-        make client (in a terminal different from the server)
-    - To communicate between 2 computers:
-        - computer 1:
-            make server
-            cd bin; java miniRSA.ChatClient <address of computer 2> 8080
-        - computer 2:
-            make server
-            cd bin; java miniRSA.ChatClient <address of computer 1> 8080
-
+    - To run on local machine for testing purpose: (port number is set to 8080 by default)
+        make run
+    - To communicate with a client/server from another computer:
+        cd bin; java miniRSA.ChatClient <server address> <server port> <local port>
+    
 2) Cracking:
     make cracker
     
@@ -147,51 +141,109 @@ URL: https://github.com/verachai/RSA
 ---------------------
 Sample Run
 ---------------------
-- Server:
+- Computer 1:
     Read 148933 primes from file.
     Enter the nth and mth prime number to compute: 
-    87313 128723
- 
-    87313th prime = 1121993, 128723th prime = 1708397
-    c = 1916809475221, m = 1916806644832, e = 1861259093169, d = 448010470481
-    Public Key = (1861259093169, 1916809475221)
-    Private Key = (448010470481, 1916809475221)
-    [SYSTEM] Server Started: ServerSocket[addr=0.0.0.0/0.0.0.0,port=0,localport=8080]
-    [SYSTEM] "-S" to Shutdown ChatServer.
+    123287 87261
     
-- Client:
+    123287th prime = 1630459, 87261th prime = 1121173
+    c = 1828026608407, m = 1828023856776, e = 1541059665623, d = 1701479163167
+    Public Key = (1541059665623, 1828026608407)
+    Private Key = (1701479163167, 1828026608407)
+    [SYSTEM] Server Started: ServerSocket[addr=0.0.0.0/0.0.0.0,port=0,localport=49880]
     Enter the text, ".bye" to quit: 
-    Hello world!
-    Receive public key: (1861259093169, 1916809475221)
+    Good afternoon!
+    Receive public key: (773276840351, 1453262835263)
     
-    Plain Text: Hello world!
-    Cyper Text: 943950602037 484164955841 1887865244307 1887865244307 577463679058 479762307688 1770394468640 577463679058 657412937559 1887865244307 606053880782 674088025137 
-    Cyper Text sent to localhost/127.0.0.1:8080
+    Plain Text: Good afternoon!
+    Cyper Text: 53830496358 20514148997 20514148997 1345972913194 565548242130 990638411915 59608031257 1000759757005 1008965977542 497459276015 130416584814 20514148997 20514148997 130416584814 850523321504 
+    Cyper Text sent to spec20/158.130.24.220:49880
     
-- Server:
-    [COMMUNICATION] Received message from /127.0.0.1:49898
-    [COMMUNICATION] cyper text: 943950602037 484164955841 1887865244307 1887865244307 577463679058 479762307688 1770394468640 577463679058 657412937559 1887865244307 606053880782 674088025137 
-    [COMMUNICATION] plain text: Hello world!
-    
-- Client:
     Enter the text, ".bye" to quit: 
-    )!(@&!*&!!!&#KDJIW8sdw87?/
-    Receive public key: (1861259093169, 1916809475221)
+    [COMMUNICATION] Received message from /158.130.24.220:57350
+    [COMMUNICATION] Cyper text: 134504693591 1130020211979 1818258845241 1818258845241 1712938276170 425207967925 
+    [COMMUNICATION] Plain text: Hello!
     
-    Plain Text: )!(@&!*&!!!&#KDJIW8sdw87?/
-    Cyper Text: 1220739310769 674088025137 1166373150795 128280210040 167330080561 674088025137 226423934362 167330080561 674088025137 674088025137 674088025137 167330080561 1300520420011 1053185462162 767262466114 320355082561 1376496137619 436929121735 254211406037 21964396575 606053880782 1770394468640 254211406037 1144271090880 1404323427025 1600304004885 
-    Cyper Text sent to localhost/127.0.0.1:8080
+    How are you?
+    Receive public key: (773276840351, 1453262835263)
+    
+    Plain Text: How are you?
+    Cyper Text: 193695538013 20514148997 916448026936 565548242130 990638411915 497459276015 1008965977542 565548242130 330882809518 20514148997 1253938595324 18817069123 
+    Cyper Text sent to spec20/158.130.24.220:49880
+    
+    Enter the text, ".bye" to quit: 
+    [COMMUNICATION] Received message from /158.130.24.220:57351
+    [COMMUNICATION] Cyper text: 231352332786 1283466126067 93416833267 985729700502 134630378062 1712938276170 1712938276170 834056203476 425207967925 
+    [COMMUNICATION] Plain text: I'm good!
+    
+    Nice talking to you!
+    Receive public key: (773276840351, 1453262835263)
+    
+    Plain Text: Nice talking to you!
+    Cyper Text: 1070700073621 1122035923428 1098356235588 1008965977542 565548242130 1000759757005 990638411915 1243439945501 753851347453 1122035923428 130416584814 409116145230 565548242130 1000759757005 20514148997 565548242130 330882809518 20514148997 1253938595324 850523321504 
+    Cyper Text sent to spec20/158.130.24.220:49880
+    
+    Enter the text, ".bye" to quit: 
+    [COMMUNICATION] Received message from /158.130.24.220:57352
+    [COMMUNICATION] Cyper text: 1794423829893 1130020211979 985729700502 893649921940 1712938276170 1712938276170 425207967925 
+    [COMMUNICATION] Plain text: Me too!
+    
+    .bye
+    [SYSTEM] Dispatcher Stopped.
+    [SYSTEM] ChatServer stopped. 
 
-- Server:
-    [COMMUNICATION] Received message from /127.0.0.1:49907
-    [COMMUNICATION] cyper text: 1220739310769 674088025137 1166373150795 128280210040 167330080561 674088025137 226423934362 167330080561 674088025137 674088025137 674088025137 167330080561 1300520420011 1053185462162 767262466114 320355082561 1376496137619 436929121735 254211406037 21964396575 606053880782 1770394468640 254211406037 1144271090880 1404323427025 1600304004885 
-    [COMMUNICATION] plain text: )!(@&!*&!!!&#KDJIW8sdw87?/
+- Computer 2:
+    Read 148933 primes from file.
+    Enter the nth and mth prime number to compute: 
+    88712 98132
     
-- Client:
+    88712th prime = 1141507, 98132th prime = 1273109
+    c = 1453262835263, m = 1453260420648, e = 773276840351, d = 632633240303
+    Public Key = (773276840351, 1453262835263)
+    Private Key = (632633240303, 1453262835263)
+    [SYSTEM] Server Started: ServerSocket[addr=0.0.0.0/0.0.0.0,port=0,localport=49880]
+    Enter the text, ".bye" to quit: 
+    [COMMUNICATION] Received message from /158.130.24.210:41357
+    [COMMUNICATION] Cyper text: 53830496358 20514148997 20514148997 1345972913194 565548242130 990638411915 59608031257 1000759757005 1008965977542 497459276015 130416584814 20514148997 20514148997 130416584814 850523321504 
+    [COMMUNICATION] Plain text: Good afternoon!
+    
+    Hello!
+    Receive public key: (1541059665623, 1828026608407)
+    
+    Plain Text: Hello!
+    Cyper Text: 134504693591 1130020211979 1818258845241 1818258845241 1712938276170 425207967925 
+    Cyper Text sent to spec10/158.130.24.210:49880
+    
+    Enter the text, ".bye" to quit: 
+    [COMMUNICATION] Received message from /158.130.24.210:41358
+    [COMMUNICATION] Cyper text: 193695538013 20514148997 916448026936 565548242130 990638411915 497459276015 1008965977542 565548242130 330882809518 20514148997 1253938595324 18817069123 
+    [COMMUNICATION] Plain text: How are you?
+    
+    I'm good!
+    Receive public key: (1541059665623, 1828026608407)
+    
+    Plain Text: I'm good!
+    Cyper Text: 231352332786 1283466126067 93416833267 985729700502 134630378062 1712938276170 1712938276170 834056203476 425207967925 
+    Cyper Text sent to spec10/158.130.24.210:49880
+    
+    Enter the text, ".bye" to quit: 
+    [COMMUNICATION] Received message from /158.130.24.210:41359
+    [COMMUNICATION] Cyper text: 1070700073621 1122035923428 1098356235588 1008965977542 565548242130 1000759757005 990638411915 1243439945501 753851347453 1122035923428 130416584814 409116145230 565548242130 1000759757005 20514148997 565548242130 330882809518 20514148997 1253938595324 850523321504 
+    [COMMUNICATION] Plain text: Nice talking to you!
+    
+    Me too!
+    Receive public key: (1541059665623, 1828026608407)
+    
+    Plain Text: Me too!
+    Cyper Text: 1794423829893 1130020211979 985729700502 893649921940 1712938276170 1712938276170 425207967925 
+    Cyper Text sent to spec10/158.130.24.210:49880
+    
     Enter the text, ".bye" to quit: 
     .bye
+    [SYSTEM] Dispatcher Stopped.
+    [SYSTEM] ChatServer stopped.
 
-
+    
 ---------------------
 Comments
 ---------------------
