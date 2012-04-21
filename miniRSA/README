@@ -116,13 +116,17 @@ You will be notified at the end whether the build is successful or not.
 Run
 ---------------------
 1) Server / client:
-    - To run the server: (port number is set to 8080 by default)
-        make server
-    - To run the client on local machine for testing purpose:
-        make client 
-    - To run the client and communicate with a client on another computer:
-        cd bin; java miniRSA.ChatClient <server address> <server port> 
-    
+    - To run the server/client on local machine for testing purpose:
+        make server (port number is set to 8080 by default)
+        make client (in a terminal different from the server)
+    - To communicate between 2 computers:
+        - computer 1:
+            make server
+            cd bin; java miniRSA.ChatClient <address of computer 2> 8080
+        - computer 2:
+            make server
+            cd bin; java miniRSA.ChatClient <address of computer 1> 8080
+
 2) Cracking:
     make cracker
     
